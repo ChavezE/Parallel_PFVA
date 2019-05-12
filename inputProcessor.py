@@ -13,6 +13,7 @@ import cv2
 IMAGES_FOLDER = 'images/'
 RESIZED_IMAGES_FOLDER = 'resized_images/'
 CSV_FILE_NAME = 'images_csv_data.csv'
+CLASS_DESCRIPTION_FILE = 'class_description.txt'
 
 # ----------------------- Functions ----------------------- #
 
@@ -77,6 +78,54 @@ def retrieveInputDataXMatrix(file_name):
 
     return input_datax_matrix
 
+'''
+Description:
+    Returns a numpu matrix parsed from file
+    colums:
+        CALC
+        CIRC
+        SPIC
+        MISC
+        ARCH
+        ASYM
+        NOMR
+        BENIGN
+'''
+def retrieveInputDataYMatrix(file_name):
+    # create helper enum 
+    class_dic = {}
+    class_dic['CALC'] = 0
+    class_dic['CIRC'] = 1
+    class_dic['SPIC'] = 2
+    class_dic['MISC'] = 3
+    class_dic['ARCH'] = 4
+    class_dic['ASYM'] = 5
+    class_dic['NORM'] = 6
+    class_dic['BENIGN'] = 7 
+    # create numpy mat
+    input_dataxymatrix = np.zeros(shape=(322, 8), dtype=np.uint8)
+
+    # iterate file
+    class_file = open(file_name, "r")
+    i = 0
+    for line in class_file:
+        splited_line = line.split()
+        # update the row baed on class
+        # class is the 3rd element of each row
+        class_colum_index = class_dic[splited_line[2]]
+        print (i)
+        input_dataxymatrix[i, class_colum_index] = 1
+
+        # update Benign of Malignant
+        # only if not NORM
+        if not class_colum_index == class_dic['NORM']:
+            if splited_line[3] == 'B':
+                input_dataxymatrix[i, class_dic['BENIGN'] ] = 1
+        # update counter
+        i = i + 1
+
+    print (input_dataxymatrix)
+
 
 # ----------------------- Main ----------------------- #
 
@@ -88,4 +137,6 @@ if __name__ == '__main__':
     
     # call input_datax creator
     # createInputDataXMatrix(RESIZED_IMAGES_FOLDER, CSV_FILE_NAME)
-    retrieveInputDataXMatrix(CSV_FILE_NAME)
+    # retrieveInputDataXMatrix(CSV_FILE_NAME)
+    # retrieveInputDataYMatrix(CLASS_DESCRIPTION_FILE)
+    retrieveInputDataYMatrix(CLASS_DESCRIPTION_FILE)
