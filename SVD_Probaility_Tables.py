@@ -6,7 +6,7 @@ def centerData(X):
     X_c = X - X_mean
     return X_c
 
-def compute_F_Mat(X_c):
+def compute_F_Mat(X_c, fullMatrices=False):
     '''
     Compute the Singular Value Decomposition & F matrix
 
@@ -14,9 +14,13 @@ def compute_F_Mat(X_c):
         - F matrix (Fv1)
     '''
     Rows, Cols = X_c.shape
-    Cols = Rows
+    print (Rows, Cols)
+    
+    # if (not fullMatrices):
+    #     Cols = Rows
+  
 
-    P, Dvec, Q_t = np.linalg.svd(X_c, full_matrices=False, compute_uv=True)
+    P, Dvec, Q_t = np.linalg.svd(X_c, full_matrices=fullMatrices, compute_uv=True)
     Q = Q_t.T
     D = np.zeros((Rows, Cols))
     D[:Cols,:Cols] = np.diag(Dvec)
