@@ -7,9 +7,13 @@ def centerData(X):
     return X_c
 
 def compute_F_Mat(X_c):
-    Rows, Cols = X_c.shape
+    '''
+    Compute the Singular Value Decomposition & F matrix
 
-    # a[a[:,0].argsort()]
+    Return Values
+        - F matrix (Fv1)
+    '''
+    Rows, Cols = X_c.shape
 
     P, Dvec, Q_t = np.linalg.svd(X_c, full_matrices=True, compute_uv=True)
     Q = Q_t.T
@@ -28,8 +32,6 @@ def probability_Estimate(F,Y):
     #print("Matrix F for probability : ",rows)
     n =11   # Set by the profesor
     
-
-
     row_Prob_Matrix = rows[0] - int(n/2) - int(n/2)
     col_Prob_Matrix = 8
 

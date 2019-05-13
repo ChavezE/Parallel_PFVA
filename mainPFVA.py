@@ -1,7 +1,8 @@
 # ===== LIBRARIES ===== #
 import numpy as np
-# import SVD
-# 
+# from SVD import *
+from inputProcessor import *
+from SVD_Probaility_Tables import *
 
 # ===================== #
 
@@ -40,22 +41,35 @@ def normalizeFthRow(FProbMat, verbose=False):
 # =================================== #
 
 def main():
-    # Read input data from CSV file
+    # Read input data from CSV file TODO Emilio
+    Xorig, Yorig = 
 
     # Center the input ==> i.e. subtract the mean from the data
+    Xc = centerData(Xorig)
 
-    # Compute the SINGULAR VALUE DECOMPOSITION
+    # Compute the F matrix & Compute the SINGULAR VALUE DECOMPOSITION
+    F = compute_F_Mat(Xc)
 
-    # Compute the F matrix & Extract the Freduced matrix
+    # Extract the Freduced matrix
+    K = 5 # Number of F columns to be considered
+    Freduced = F[:,:K]
 
     # Create the matrices to fill the P_model list
+    P_model = []
+    for i in range(K):
+        probability_Matrix = probability_Estimate(Freduced[:,i],Yorig)
+        P_model.append(probability_Matrix)
 
     # Normalize and obtaint the MIN,MAX from each 
-    
-    # Final Regression
+    for i in range(K):
+        currectProbMat = P_model[i]
+        normDict = normalizeFthRow(currectProbMat)
+        currectProbMat[:,0] = normDict["normColVector"]
+
+    # Final Regression TODO Emilio
 
     # PREDICT!!!
-    pass
+    
 
 
 
