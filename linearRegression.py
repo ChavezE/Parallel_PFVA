@@ -71,7 +71,7 @@ def normalizeFthRow(FProbMat, verbose=False):
 
     maxVal = origColVector[-1] # The last element is the max value bc preordering
     minVal = origColVector[0] 
-    normColVector = origColVector / maxVal
+    normColVector = (origColVector - minVal)  / (maxVal - minVal)
 
     if verbose:
         print("normalized vector : {}".format(normColVector))
