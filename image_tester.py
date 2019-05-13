@@ -16,8 +16,8 @@ def test_image(img_name):
     cur_img = cv2.imread(img_name, cv2.IMREAD_GRAYSCALE)
     # print (cur_img.shape)
     img_row = np.reshape(cur_img, (1, 256*256))
-
     Xc = centerData(img_row)
+    print(Xc[0,40000:40500])
 
     # Compute the F matrix & Compute the SINGULAR VALUE DECOMPOSITION
     print("\n===== Computing F matrix through SVD =====\n")    

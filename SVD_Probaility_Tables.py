@@ -2,7 +2,8 @@ import numpy as np
 import pandas as pd
 
 def centerData(X):
-    X_mean = np.mean(X, axis=0)
+    X_mean = np.mean(X)
+    print(X_mean)
     X_c = X - X_mean
     return X_c
 
@@ -15,18 +16,26 @@ def compute_F_Mat(X_c, fullMatrices=False):
     '''
     Rows, Cols = X_c.shape
     print (Rows, Cols)
-    
-    # if (not fullMatrices):
-    #     Cols = Rows
-  
 
-    P, Dvec, Q_t = np.linalg.svd(X_c, full_matrices=fullMatrices, compute_uv=True)
+    # Compute the SVD using the built-in Numpy function
+    # P, Dvec, Q_t = np.linalg.svd(X_c, full_matrices=fullMatrices, compute_uv=True)
+    P, Dvec, Q_t = # TODO find another method to compute this matrices
     Q = Q_t.T
-    D = np.zeros((Rows, Cols))
-    D[:Cols,:Cols] = np.diag(Dvec)
+
+    # Build the D matrix (singular value matrix). For more information, visit:
+    # https://docs.scipy.org/doc/numpy-1.15.0/reference/generated/numpy.linalg.svd.html
+
+    if fullMatrices:
+        D = np.zeros((Rows, Cols))
+        D[:Cols,:Cols] = np.diag(Dvec)
+    else:
+        D = np.diag(Dvec)
+        print(Q.shape)
+        
+    # Finally, compute the F matrix using both methods 
     Fv1 = P @ D
     Fv2 = X_c @ Q
-    assert(Fv1.all() == Fv2.all())
+
     return Fv1
 
 # Recives a column of F and the matrix Y, returns the prob matrix for that F value
@@ -105,11 +114,7 @@ def main():
     for i in range(K):
         probability_Matrix = probability_Estimate(F[:,i],Y)
         P_model.append(probability_Matrix)
-    
 
-    
-    
-    
     print("==============F===========")
     print(F)
     print("==============Probability===========")
