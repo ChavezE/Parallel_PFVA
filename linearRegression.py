@@ -8,14 +8,89 @@ Description:
 
     Y = b1*x1 + b2*x2 ... b5*x5
 '''
-def curveFitting_LSM(X, Y):
-    X_inverse = np.linalg.inv(X)
-    X_transposed = X.X_transpose()
+def curveFitting_LSM(Yn, Fn):
+    # Theta = (Fn' @ Fn)^-1 @ Fn' @ Yn
 
-    # get the fitted coefficients
-    betha = np.linalg.inv(X_transposed*X)*X_transposed*Y
+    theta = np.linalg.inv(Fn.T @ Fn)
+    theta = theta @ Fn.T @ Yn
 
-    return betha
+    return theta
+
+
+# These functions will be used to compute the coefficients theta to predict on new images
+'''
+Description:
+    This function computes matrix Ynorm that will further be used to compute the
+    coefficients of the matrix Theta.
+
+    INPUT:
+        P_model: list of numpy vectors
+'''
+def computeYAndFNormalized(P_model):
+    assert len(P_model) > 1
+    hSamples, cols = P_model[0].shape
+    numOfClasses = cols - 1 # Remove fn
+    K = len(P_model)
+
+    Ynorm = np.zeros(shape=(hSamples, numOfClasses)) 
+    Fnorm = np.zeros(shape=(hSamples, K))
+
+    # iterate the list and take the average
+    for i in range(K):
+        # Currect Matrix
+        subMat = P_model[i]
+        
+        # Append Fcolumn to Fnorm matix
+        Fnorm[:,i] = subMat[:,0]
+
+        # for each k estimator, for our proj always 8
+        for row in range(hSamples):
+            for k in range(numOfClasses): # removing F
+                # sum each k row
+                Ynorm[row,k] += subMat[row,k+1]
+    
+    Ynorm /= (1/K)
+
+    return Ynorm, Fnorm
+
+def normalizeFthRow(FProbMat, verbose=False):
+    '''
+    This function will normalize [0,1) the values from the column 0, i.e. 
+    normalize the values corresponding to the F matrix.
+
+    Return Values
+        Dictionary with the following elements:
+        - normColVector : Normalized column vector
+        - MAX : maximun value of the normColVector
+        - MIN : minimun value of the normColVector
+    '''
+    origColVector = FProbMat[:,0]
+
+    if verbose:
+        print("original vector : {}".format(origColVector))
+
+    maxVal = origColVector[-1] # The last element is the max value bc preordering
+    minVal = origColVector[0] 
+    normColVector = origColVector / maxVal
+
+    if verbose:
+        print("normalized vector : {}".format(normColVector))
+
+    ansVals = {
+        "normColVector" : normColVector,
+        "MAX" : maxVal,
+        "MIN" : minVal
+    }
+
+    return ansVals
+
+
+
+
+
+################################################################################
+############################## DEPRECIATED ######################################
+################################################################################
 
 '''
 Description:
