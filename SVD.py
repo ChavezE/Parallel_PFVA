@@ -20,18 +20,39 @@ def compute_F_Mat(X_c):
     assert(Fv1.all() == Fv2.all())
     return Fv1
 
+# Recives a column of F and the matrix Y, returns the prob matrix for that F value
 def probability_Estimate(F,Y):
-    rows,cols = F.shape
-    print(rows,cols)
-
+    
+    rows = F.shape
+    
+    #print("Matrix F for probability : ",rows)
     n =11   # Set by the profesor
-    row_Prob_Matrix = rows - int(n/2)
-    col_Prob_Matrix = cols
-    prob_Matrix = np.zeros((row_Prob_Matrix,col_Prob_Matrix))
-    print(prob_Matrix.shape)
-    for j in range(col_Prob_Matrix):
-        for i in range(row_Prob_Matrix):
-            prob_Matrix[i,j] = np.average(F[i:i+n,j])
+    
+
+
+    row_Prob_Matrix = rows[0] - int(n/2) - int(n/2)
+    col_Prob_Matrix = 8
+
+    # se crea la matriz de probabilidad
+    prob_Matrix = np.zeros((row_Prob_Matrix,col_Prob_Matrix+1))
+
+    base_Matrix = np.zeros((rows[0],col_Prob_Matrix+1))
+    base_Matrix[:,0] = F
+    base_Matrix[:,1:] = Y
+    
+    #print("Base matrix",base_Matrix)
+
+    # Sort the matrix according to F values
+    base_Matrix_Sorted = base_Matrix[base_Matrix[:,0].argsort()]
+    #print("Base matrix ordenada",base_Matrix_Sorted)
+
+    for i in range (row_Prob_Matrix):
+        for j in range(8):
+            prob_Matrix[i,j+1] = np.average(base_Matrix_Sorted[i:i+n,j+1])
+    rowBase,colBase = base_Matrix_Sorted.shape
+    prob_Matrix[:,0] = base_Matrix_Sorted[int(n/2):rowBase - int(n/2),0]
+
+    
     
     return prob_Matrix
 
@@ -43,21 +64,36 @@ def main():
     X_input = pd.read_excel("Clean Data.xlsx")
     X = X_input.values
     X = X[:,2:22]
+    Rows, Cols = X.shape
+    print("Size of X",X.shape)
 
     Y_input = pd.read_excel("classes_example.xlsx")
 
-    Rows, Cols = X.shape
-    print(X.shape)
-    # ======= Data set 2 ============
-    # X_t = np.array([
-    #     [3,6,2,6,2,9,6,5,9,4,7,11,5,4,3,9,10,5,4,10],
-    #     [14,7,11,9,9,4,8,11,5,8,2,4,12,9,8,1,4,13,15,6]
-    # ])
-    # X = X_t.T
+    
+
+    # Erase this for real test
+    Y = np.zeros((87,8))
+    Y[:,0] = Y_input.values.T
+    Y[:,1] = Y_input.values.T
+    Y[:,2] = Y_input.values.T
+    Y[:,3] = Y_input.values.T
+    Y[:,4] = Y_input.values.T
+    Y[:,5] = Y_input.values.T
+    Y[:,6] = Y_input.values.T
+    Y[:,7] = Y_input.values.T
+
+    print("Shape of Y",Y.shape)
+    #############################
+
 
     X_c = centerData(X)
     F = compute_F_Mat(X_c)
-    probability_Matrix = probability_Estimate(F,Y_input)
+
+
+    probability_Matrix = probability_Estimate(F[:,0],Y)
+    
+    
+    
     print("==============F===========")
     print(F)
     print("==============Probability===========")
