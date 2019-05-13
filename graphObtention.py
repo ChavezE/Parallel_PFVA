@@ -22,4 +22,5 @@ def createGraphs(P_model):
             plt.xlabel("F (normalized values)")
             plt.ylabel("Proabilistic values")
             myFig.savefig("Graphs/Graph_Y"+str(j)+'_F'+str(i+1)+'.pdf')
+            myFig.savefig("Graphs/Graph_Y"+str(j)+'_F'+str(i+1)+'.png')
             plt.close(myFig)

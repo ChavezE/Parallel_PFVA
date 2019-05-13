@@ -56,6 +56,8 @@ def createInputDataXMatrix(images_directory, file_name):
         # print (img)
         # load image
         cur_img = cv2.imread(img, cv2.IMREAD_GRAYSCALE)
+        resized30 = cv2.resize(cur_img,(int(30),int(30)))
+        
         # print (cur_img.shape)
         img_row = np.reshape(cur_img, (1, 256*256))
         # print (img_row.shape)

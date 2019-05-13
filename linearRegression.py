@@ -27,7 +27,7 @@ Description:
         P_model: list of numpy vectors
 '''
 def computeYAndFNormalized(P_model):
-    assert len(P_model) > 1
+    assert len(P_model) >= 1
     hSamples, cols = P_model[0].shape
     numOfClasses = cols - 1 # Remove fn
     K = len(P_model)
@@ -52,6 +52,36 @@ def computeYAndFNormalized(P_model):
     Ynorm /= (1/K)
 
     return Ynorm, Fnorm
+
+def normalizeNewF(F):
+    minMaxMatrix = np.genfromtxt('listMinMaxF.csv', delimiter=',')
+    
+    rows = minMaxMatrix.shape 
+    
+    if (len(rows) == 1):
+        minF = minMaxMatrix[0]
+        maxF = minMaxMatrix[1]
+        F[0] = (F[0] - minF)/ (maxF - minF)
+        if (F[0] > 1):
+            F[0] = 1
+        elif (F[0] < 0):
+            F[0] = 0
+                
+    else:
+        for i in range (rows[0]):
+            minF = minMaxMatrix[i,0]
+            maxF = minMaxMatrix[i,1]
+            F[i] = (F[i] - minF)/ (maxF - minF)
+            if (F[i] > 1):
+                F[i] = 1
+            elif (F[i] < 0):
+                F[i] = 0
+
+    # print ("rows shape", len(rows))
+    # print ("rows", rows[1])
+    # print ("Min max ", minMaxMatrix)
+
+    return F
 
 def normalizeFthRow(FProbMat, verbose=False):
     '''

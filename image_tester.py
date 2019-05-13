@@ -1,5 +1,6 @@
 import numpy as np
 from SVD_Probaility_Tables import *
+from linearRegression import *
 import argparse
 import sys
 # Temporary workaround for fixing ROS problem in Emilio's machine
@@ -36,7 +37,12 @@ def test_image(img_name):
     print ("F Reduced shape:", Freduced.shape)
     print (Freduced)
     print ("Thetha shape:", thetas.shape)
-    resultsMatrix = Freduced @ thetas
+    
+    FreducesNorm = normalizeNewF(Freduced)
+    print("F normed", FreducesNorm)
+
+    print (thetas)
+    resultsMatrix = FreducesNorm[0] * thetas
 
     print("\n===== Dimensions of the Result Matrix {} =====\n".format(resultsMatrix.shape))
     print (resultsMatrix) 

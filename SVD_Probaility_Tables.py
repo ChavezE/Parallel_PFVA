@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from scipy.linalg import svd
 
 def centerData(X):
     X_mean = np.mean(X)
@@ -18,8 +19,8 @@ def compute_F_Mat(X_c, fullMatrices=False):
     print (Rows, Cols)
 
     # Compute the SVD using the built-in Numpy function
-    # P, Dvec, Q_t = np.linalg.svd(X_c, full_matrices=fullMatrices, compute_uv=True)
-    P, Dvec, Q_t = # TODO find another method to compute this matrices
+    P, Dvec, Q_t = np.linalg.svd(X_c, full_matrices=fullMatrices, compute_uv=True)
+    # P, Dvec, Q_t = svd(X_c) # TODO find another method to compute this matrices
     Q = Q_t.T
 
     # Build the D matrix (singular value matrix). For more information, visit:

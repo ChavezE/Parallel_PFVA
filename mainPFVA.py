@@ -29,7 +29,7 @@ def generateModel():
     F = compute_F_Mat(Xc)
 
     # Extract the Freduced matrix
-    K = 5 # Number of F columns to be considered
+    K = 1 # Number of F columns to be considered
     Freduced = F[:,:K]
 
     # Create the matrices to fill the P_model list
@@ -39,21 +39,40 @@ def generateModel():
         probability_Matrix = probability_Estimate(Freduced[:,i],Yorig)
         P_model.append(probability_Matrix)
 
-    
-
 
     # print(P_model)
 
     # Normalize and obtaint the MIN,MAX from each \
     print("\n===== Normalizing P_model =====\n")
     # TODO store data for each index in P_model
+    listMinMaxF = []
     for i in range(K):
         currentProbMat = P_model[i]
         normDict = normalizeFthRow(currentProbMat)
+        listMinMaxF.append([normDict["MIN"], normDict["MAX"]])
         P_model[i][:,0] = normDict["normColVector"]
     
+    # save min and max in a csv
+    np.savetxt("listMinMaxF.csv", listMinMaxF, delimiter=",", fmt="%3u")
+
+    # create graphs
     createGraphs(P_model)
     
+    ####### Aqui la vida del proj ######
+    Yi_paired_data = []
+
+    # for subMat in P_model:
+    #     rows, cols = subMat.shape
+    #     yPairTemp = []
+    #     for yInterest in range (1,cols):
+    #         for row in range(rows):
+    #             # append all Fk related to Yi
+    #             yPairTemp.append(subMat[row,col])
+            
+
+            
+
+
 
     # Final Regression TODO Emilio
     print("\n===== Compute the matrices Ynorm & Fnorm =====\n")
