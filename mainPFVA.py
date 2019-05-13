@@ -3,6 +3,7 @@ import numpy as np
 # from SVD import *
 from inputProcessor import *
 from SVD_Probaility_Tables import *
+from linearRegression import *
 
 # ===================== #
 
@@ -42,7 +43,7 @@ def normalizeFthRow(FProbMat, verbose=False):
 
 def main():
     # Read input data from CSV file TODO Emilio
-    Xorig, Yorig = 
+    Xorig, Yorig = retrieveInputDataXMatrix(), retrieveInputDataYMatrix()
 
     # Center the input ==> i.e. subtract the mean from the data
     Xc = centerData(Xorig)
