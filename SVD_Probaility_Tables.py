@@ -30,7 +30,7 @@ def probability_Estimate(F,Y):
     rows = F.shape
     
     #print("Matrix F for probability : ",rows)
-    n =11   # Set by the profesor
+    n = 11   # Set by the profesor
     
     row_Prob_Matrix = rows[0] - int(n/2) - int(n/2)
     col_Prob_Matrix = 8

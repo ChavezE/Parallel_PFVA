@@ -43,7 +43,7 @@ def normalizeFthRow(FProbMat, verbose=False):
 
 def main():
     # Read input data from CSV file TODO Emilio
-    Xorig, Yorig = retrieveInputDataXMatrix(), retrieveInputDataYMatrix()
+    Xorig, Yorig = retrieveInputDataXMatrix(CSV_FILE_NAME), retrieveInputDataYMatrix(CLASS_DESCRIPTION_FILE)
 
     # Center the input ==> i.e. subtract the mean from the data
     Xc = centerData(Xorig)
@@ -60,12 +60,13 @@ def main():
     for i in range(K):
         probability_Matrix = probability_Estimate(Freduced[:,i],Yorig)
         P_model.append(probability_Matrix)
+    print(P_model)
 
     # Normalize and obtaint the MIN,MAX from each 
     for i in range(K):
-        currectProbMat = P_model[i]
-        normDict = normalizeFthRow(currectProbMat)
-        currectProbMat[:,0] = normDict["normColVector"]
+        currentProbMat = P_model[i]
+        normDict = normalizeFthRow(currentProbMat)
+        currentProbMat[:,0] = normDict["normColVector"]
 
     # Final Regression TODO Emilio
 
@@ -76,3 +77,4 @@ def main():
 
 
 if __name__ == "__main__":
+    main()

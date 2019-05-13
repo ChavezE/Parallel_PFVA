@@ -53,7 +53,7 @@ def createInputDataXMatrix(images_directory, file_name):
     input_datax_matrix = np.zeros(shape=(322, 256*256), dtype=np.uint8)
     i = 0
     for img in images_list:
-        print (img)
+        # print (img)
         # load image
         cur_img = cv2.imread(img, cv2.IMREAD_GRAYSCALE)
         # print (cur_img.shape)
@@ -103,7 +103,7 @@ def retrieveInputDataYMatrix(file_name):
     class_dic['NORM'] = 6
     class_dic['BENIGN'] = 7 
     # create numpy mat
-    input_dataxymatrix = np.zeros(shape=(322, 8), dtype=np.uint8)
+    inputDataYMatrix = np.zeros(shape=(322, 8), dtype=np.uint8)
 
     # iterate file
     class_file = open(file_name, "r")
@@ -113,18 +113,18 @@ def retrieveInputDataYMatrix(file_name):
         # update the row baed on class
         # class is the 3rd element of each row
         class_colum_index = class_dic[splited_line[2]]
-        print (i)
-        input_dataxymatrix[i, class_colum_index] = 1
+        # print (i)
+        inputDataYMatrix[i, class_colum_index] = 1
 
         # update Benign of Malignant
         # only if not NORM
         if not class_colum_index == class_dic['NORM']:
             if splited_line[3] == 'B':
-                input_dataxymatrix[i, class_dic['BENIGN'] ] = 1
+                inputDataYMatrix[i, class_dic['BENIGN'] ] = 1
         # update counter
         i = i + 1
 
-    print (input_dataxymatrix)
+    return inputDataYMatrix
 
 
 # ----------------------- Main ----------------------- #
