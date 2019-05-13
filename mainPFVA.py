@@ -3,6 +3,8 @@ import numpy as np
 from inputProcessor import *
 from SVD_Probaility_Tables import *
 from linearRegression import *
+import argparse
+
 
 # ===================== #
 THETA_FILE = 'thetas.csv'
@@ -163,5 +165,26 @@ def main(target):
 
 if __name__ == "__main__":
     
-    target = 'GENERATE'
+    # construct the argument parse and parse the arguments
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-t", "--target", required=True,help="M for generating new model, P for predicting")
+    args = vars(ap.parse_args())
+   
+    # Modeling selected
+    if (args["target"] == "M"):
+        print ("################################################")
+        print ("\n######## Target selected is Modeling ########\n")
+        print ("################################################")
+        
+        target = 'GENERATE'
+    
+    # Predictor selected
+    elif (args["target"] == "P"):
+        print ("################################################")
+        print ("\n######## Target selected is Prediction ########\n")
+        print ("################################################")
+        
+        target = 'PREDICT'
+    
+    # pass the desired target to main function
     main(target)
