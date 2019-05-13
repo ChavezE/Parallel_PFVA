@@ -31,15 +31,7 @@ def computeResponseVectorYAverage(P_model):
     print(rows,cols)
     # Has the average of all stimatiors for each Yi
     Y_vector_repsonse = np.zeros(shape=(rows,cols-1)) # remove fn
-    
-    '''
-        rows
-        0        k1, k2, k3, k4 k5 -> [y1, y2 ... y8]*k
-        1
-        2
-        n - (w/2 + w/2)
 
-    '''
     # iterate the list and take the average
     for subMat in P_model:
         # for each k estimator, for our proj always 8

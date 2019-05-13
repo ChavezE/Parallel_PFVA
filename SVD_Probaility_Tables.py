@@ -14,8 +14,9 @@ def compute_F_Mat(X_c):
         - F matrix (Fv1)
     '''
     Rows, Cols = X_c.shape
+    Cols = Rows
 
-    P, Dvec, Q_t = np.linalg.svd(X_c, full_matrices=True, compute_uv=True)
+    P, Dvec, Q_t = np.linalg.svd(X_c, full_matrices=False, compute_uv=True)
     Q = Q_t.T
     D = np.zeros((Rows, Cols))
     D[:Cols,:Cols] = np.diag(Dvec)
