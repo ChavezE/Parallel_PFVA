@@ -4,6 +4,7 @@ from inputProcessor import *
 from SVD_Probaility_Tables import *
 from linearRegression import *
 import argparse
+from graphObtention import *
 
 
 # ===================== #
@@ -37,6 +38,10 @@ def generateModel():
     for i in range(K):
         probability_Matrix = probability_Estimate(Freduced[:,i],Yorig)
         P_model.append(probability_Matrix)
+
+    
+
+
     # print(P_model)
 
     # Normalize and obtaint the MIN,MAX from each \
@@ -46,6 +51,9 @@ def generateModel():
         currentProbMat = P_model[i]
         normDict = normalizeFthRow(currentProbMat)
         P_model[i][:,0] = normDict["normColVector"]
+    
+    createGraphs(P_model)
+    
 
     # Final Regression TODO Emilio
     print("\n===== Compute the matrices Ynorm & Fnorm =====\n")
