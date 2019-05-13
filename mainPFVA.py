@@ -5,6 +5,7 @@ from SVD_Probaility_Tables import *
 from linearRegression import *
 
 # ===================== #
+THETA_FILE = 'thetas.csv'
 
 # ===== HELPER FUNCTIONS ===== #
 def normalizeFthRow(FProbMat, verbose=False):
@@ -90,8 +91,7 @@ def curveFitting_LSM(Yn, Fn):
 
     return theta
 
-# =================================== #
-def main():
+def generateModel():
     # Read input data from CSV file 
     print("\n===== Reading input data from CSV file =====\n")
     Xorig, Yorig = retrieveInputDataXMatrix(CSV_FILE_NAME), retrieveInputDataYMatrix(CLASS_DESCRIPTION_FILE)
@@ -117,7 +117,7 @@ def main():
     # print(P_model)
 
     # Normalize and obtaint the MIN,MAX from each \
-    print("\n===== Reading input data from CSV file =====\n")
+    print("\n===== Normalizing P_model =====\n")
     # TODO store data for each index in P_model
     for i in range(K):
         currentProbMat = P_model[i]
@@ -137,7 +137,31 @@ def main():
     print("\n===== Dimensions of the matrix theta {} =====\n".format(theta.shape))
     print(theta)
 
-    # PREDICT!!! TODO
+    return theta
+
+def safeThetaCoeff(file_name, thetas):
+    np.savetxt(file_name, thetas, delimiter=",", fmt="%1.6f")
+
+
+# =================================== #
+def main(target):
+    if target == 'GENERATE':
+        print("\n===== Begining model generation =====\n")
+        
+        # THE JUICE IS CREATED HERE
+        thetas = generateModel()
+        
+        print("\n===== Model generation completed, storing theta values ... =====\n")
+        safeThetaCoeff(THETA_FILE, thetas)
+        print("\n===== ... Done =====\n")
     
+    else:
+        # DRINK THE JUICE HERE
+        pass
+
+
+
 if __name__ == "__main__":
-    main()
+    
+    target = 'GENERATE'
+    main(target)
