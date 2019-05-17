@@ -1,3 +1,3 @@
 # Parallel_PFVA
 
-Kike :D
+This repository contains the final project of Multiprocesors. 
